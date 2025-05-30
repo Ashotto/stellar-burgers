@@ -9,7 +9,7 @@
 .elements {
   min-height: 100px;
 
-  overflow-y: auto;
+  overflow-y: scroll;
   list-style-type: none;
   margin: 0;
   padding: 0;
