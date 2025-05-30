@@ -1,17 +1,14 @@
-.ingredients {
-  display: flex;
-  padding: 0;
-  margin: 0;
-}
-
 .order {
   display: block;
+  min-width: 576px;
+  padding: 24px;
+  margin-bottom: 16px;
+  margin-right: 8px;
+  box-sizing: border-box;
   text-decoration: none;
-  color: unset;
+  color: inherit;
   background-color: #1c1c21;
   border-radius: 40px;
-  min-width: 576px;
-  box-sizing: border-box;
 }
 
 .order_info {
@@ -21,6 +18,7 @@
 }
 
 .order_name {
+  margin-top: 24px;
   text-align: left;
 }
 
@@ -28,39 +26,49 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 24px;
 }
 
-.order_total {
-  vertical-align: top;
+.ingredients {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .img_wrap {
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  border: #801ab3 solid 2px;
-  background-color: #1c1c21;
   position: relative;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #1c1c21;
+  border: 2px solid #801ab3;
 }
 
-.img_wrap:nth-child(n + 2) {
-  position: relative;
-  right: 25px;
+.img_wrap:not(:first-child) {
+  margin-left: -20px;
 }
 
 .img {
-  position: relative;
-  right: 25px;
+  position: absolute;
   width: 112px;
   height: 56px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .remains {
   position: absolute;
-  left: 50%;
   top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.order_total {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: top;
 }

@@ -1,25 +1,26 @@
 {
+  "include": ["src"],
   "compilerOptions": {
-    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "target": "es5",
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "jsx": "react-jsx",
     "moduleResolution": "node",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "jsx": "react-jsx",
-    "types": ["node", "jest"],
+    "module": "commonjs",
     "baseUrl": ".",
+    "types": ["node", "jest"],
     "paths": {
-      "@pages": ["src/pages"],
       "@components": ["src/components"],
+      "@pages": ["src/pages"],
       "@ui": ["src/components/ui"],
       "@ui-pages": ["src/components/ui/pages"],
       "@utils-types": ["src/utils/types"],
@@ -27,6 +28,5 @@
       "@slices": ["src/services/slices"],
       "@selectors": ["src/services/selectors"]
     }
-  },
-  "include": ["src"]
+  }
 }

@@ -1,47 +1,47 @@
+interface CookieOptions {
+  path?: string;
+  domain?: string;
+  expires?: Date | number;
+  secure?: boolean;
+  sameSite?: 'strict' | 'lax' | 'none';
+  [key: string]: string | number | Date | boolean | undefined;
+}
+
+const DEFAULT_COOKIE_PATH = '/';
+
 export function getCookie(name: string): string | undefined {
-  const matches = document.cookie.match(
-    new RegExp(
-      '(?:^|; )' +
-        // eslint-disable-next-line no-useless-escape
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') +
-        '=([^;]*)'
-    )
-  );
+  const escapedName = name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1');
+  const regex = new RegExp(`(?:^|;)${escapedName}=([^;]*)`);
+  const matches = document.cookie.match(regex);
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
 export function setCookie(
   name: string,
   value: string,
-  props: { [key: string]: string | number | Date | boolean } = {}
-) {
-  props = {
-    path: '/',
-    ...props
-  };
-
-  let exp = props.expires;
-  if (exp && typeof exp === 'number') {
-    const d = new Date();
-    d.setTime(d.getTime() + exp * 1000);
-    exp = props.expires = d;
+  props: CookieOptions = {}
+): void {
+  const options: CookieOptions = { path: DEFAULT_COOKIE_PATH, ...props };
+  
+  if (typeof options.expires === 'number') {
+    const expiresDate = new Date();
+    expiresDate.setTime(expiresDate.getTime() + options.expires * 1000);
+    options.expires = expiresDate;
   }
 
-  if (exp && exp instanceof Date) {
-    props.expires = exp.toUTCString();
-  }
-  value = encodeURIComponent(value);
-  let updatedCookie = name + '=' + value;
-  for (const propName in props) {
-    updatedCookie += '; ' + propName;
-    const propValue = props[propName];
-    if (propValue !== true) {
-      updatedCookie += '=' + propValue;
+  let cookieString = `${name}=${encodeURIComponent(value)}`;
+
+  Object.entries(options).forEach(([key, value]) => {
+    if (value === undefined) return;
+    cookieString += `; ${key}`;
+    if (value !== true) {
+      cookieString += `=${value}`;
     }
-  }
-  document.cookie = updatedCookie;
+  });
+
+  document.cookie = cookieString;
 }
 
-export function deleteCookie(name: string) {
+export function deleteCookie(name: string): void {
   setCookie(name, '', { expires: -1 });
 }

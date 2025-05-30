@@ -5,10 +5,16 @@ import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
 
 export const ResetPassword: FC = () => {
-  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem('resetPassword')) {
+      navigate('/forgot-password', { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -20,12 +26,6 @@ export const ResetPassword: FC = () => {
       })
       .catch((err) => setError(err));
   };
-
-  useEffect(() => {
-    if (!localStorage.getItem('resetPassword')) {
-      navigate('/forgot-password', { replace: true });
-    }
-  }, [navigate]);
 
   return (
     <ResetPasswordUI

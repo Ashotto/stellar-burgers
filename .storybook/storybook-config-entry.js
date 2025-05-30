@@ -3,7 +3,6 @@ module.exports = {
   addons: ['@storybook/addon-essentials'],
   webpackFinal: async (config) => {
     config.entry.push(require.resolve('../.storybook/preview.tsx'));
-
     return config;
   }
 };

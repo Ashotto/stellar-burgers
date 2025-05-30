@@ -1,18 +1,18 @@
 .container {
-  display: flex;
-  max-width: 1240px;
   width: 100%;
+  max-width: 1240px;
   height: 100%;
   margin: 0 auto;
+  display: flex;
 }
 
 .wrapCenter {
-  margin: auto;
   width: 480px;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .form {
@@ -33,6 +33,7 @@
   justify-content: center;
 }
 
+/* Text styles */
 .question {
   color: #8585ad;
 }

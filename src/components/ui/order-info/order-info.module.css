@@ -1,7 +1,30 @@
 .wrap {
-  margin: 0 auto;
   width: 640px;
+  margin: 0 auto;
 }
+
+.list {
+  list-style: none;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.title {
+  margin: 120px 0 0;
+  font-family: 'Jet Brains Mono';
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.header,
+.orderNumber {
+  margin: 0;
+}
+
+.orderNumber,
 .number {
   text-align: center;
 }
@@ -10,51 +33,36 @@
   color: #00cccc;
 }
 
-.header {
-  margin: 0;
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .img_wrap {
+  position: relative;
   width: 64px;
   height: 64px;
   border-radius: 50%;
   background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
-  position: relative;
 }
 
 .border {
+  position: absolute;
   width: 60px;
   height: 60px;
-  border-radius: 50%;
-  background-color: #1c1c21;
-  position: absolute;
   left: 2px;
   top: 2px;
+  border-radius: 50%;
+  background-color: #1c1c21;
   text-align: center;
 }
 
 .img {
   position: relative;
-  right: 25px;
   width: 112px;
   height: 56px;
-}
-
-.item {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.quantity {
-  margin-left: auto;
-}
-
-.list {
-  list-style: none;
-  padding: 0;
-  overflow-y: auto;
-  max-height: 320px;
+  right: 25px;
 }
 
 .list::-webkit-scrollbar {
@@ -66,11 +74,13 @@
   background-color: #8585ad;
 }
 
-.bottom {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
+.quantity,
 .total {
   margin-left: auto;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }

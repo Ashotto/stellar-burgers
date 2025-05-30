@@ -1,21 +1,21 @@
-.containerMain {
+.main {
   display: flex;
-  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
   overflow: hidden;
-  max-width: 1240px;
+}
+
+.containerMain {
+  flex-direction: column;
+  display: flex;
   margin: 0 auto;
+  max-width: 1240px;
+  overflow: hidden;
 }
 
 .title {
-  width: 100%;
-  max-width: 1260px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.main {
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
-  overflow: hidden;
+  max-width: 1260px;
+  width: 100%;
 }

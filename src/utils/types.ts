@@ -1,3 +1,7 @@
+export type TConstructorIngredient = TIngredient & {
+  id: string;
+};
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -10,10 +14,6 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
-};
-
-export type TConstructorIngredient = TIngredient & {
-  id: string;
 };
 
 export type TOrder = {
@@ -32,9 +32,11 @@ export type TOrdersData = {
   totalToday: number;
 };
 
+export type TTabMode = 'bun' | 'sauce' | 'main';
+
 export type TUser = {
   email: string;
   name: string;
 };
 
-export type TTabMode = 'bun' | 'sauce' | 'main';
+export type TNewOrder = { order: TOrder; name: string } | null;

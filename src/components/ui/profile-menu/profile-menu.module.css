@@ -1,9 +1,12 @@
-.link {
+.link,
+.button {
   display: block;
-  width: 100%;
   text-decoration: none;
-  display: block;
   color: #8585ad;
+}
+
+.link {
+  width: 100%;
 }
 
 .link_active {
@@ -11,9 +14,6 @@
 }
 
 .button {
-  text-decoration: none;
-  display: block;
-  color: #8585ad;
   background-color: unset;
   border: none;
 }

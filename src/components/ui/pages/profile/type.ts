@@ -6,9 +6,9 @@ export type ProfileUIProps = {
     email: string;
     password: string;
   };
+  updateUserError?: string;
   isFormChanged: boolean;
+  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: SyntheticEvent) => void;
   handleCancel: (e: SyntheticEvent) => void;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  updateUserError?: string;
 };
