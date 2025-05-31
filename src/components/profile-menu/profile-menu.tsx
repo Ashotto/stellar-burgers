@@ -1,15 +1,16 @@
 import { FC } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ProfileMenuUI } from '@ui';
 import { useDispatch } from '../../services/store';
-import { logout } from '../../services/user/actions';
+import { fetchLogout } from '../../services/slices/authSlice';
 
 export const ProfileMenu: FC = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(fetchLogout());
     navigate('/');
   };
 

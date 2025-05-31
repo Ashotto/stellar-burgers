@@ -1,25 +1,34 @@
-import { FC, FormEvent, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { LoginUI } from '@ui-pages';
-import { useDispatch } from '../../services/store';
-import { login } from '../../services/user/actions';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  clearErrorMessage,
+  fetchLoginUser,
+  selectError
+} from '../../services/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const error = useSelector(selectError);
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(
-      login({
-        email: email,
-        password: password
-      })
-    );
+    const data = { email, password };
+    dispatch(fetchLoginUser(data));
+    navigate('/');
   };
+
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, []);
 
   return (
     <LoginUI
-      errorText=''
+      errorText={error}
       email={email}
       setEmail={setEmail}
       password={password}

@@ -1,20 +1,19 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { getUser } from '../../services/user/reducer';
-import { userUpdate } from '../../services/user/actions';
+import { selectIsAuthenticated } from '../../services/slices/authSlice';
+import {
+  fetchUpdateUser,
+  selectUserData
+} from '../../services/slices/authSlice';
 
 export const Profile: FC = () => {
-  const userApi = useSelector(getUser);
+  const user = useSelector(selectUserData);
   const dispatch = useDispatch();
-  const user = {
-    name: userApi?.name || '',
-    email: userApi?.email || ''
-  };
 
   const [formValue, setFormValue] = useState({
-    name: '',
-    email: '',
+    name: user.name,
+    email: user.email,
     password: ''
   });
 
@@ -24,23 +23,23 @@ export const Profile: FC = () => {
       name: user?.name || '',
       email: user?.email || ''
     }));
-  }, [userApi]);
+  }, [user]);
 
   const isFormChanged =
-    formValue.name !== user?.name || formValue.email !== user?.email;
+    formValue.name !== user?.name ||
+    formValue.email !== user?.email ||
+    !!formValue.password;
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    if (isFormChanged) {
-      dispatch(userUpdate(formValue));
-    }
+    dispatch(fetchUpdateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user.name,
-      email: user.email,
+      name: user!.name,
+      email: user!.email,
       password: ''
     });
   };

@@ -3,20 +3,30 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useSelector } from 'react-redux';
-import { getAllIngredients } from '../../services/ingredients/reducer';
+import { useSelector } from '../../services/store';
+import { selectIngredients } from '../../services/slices/ingredientSlice';
 
 export const BurgerIngredients: FC = () => {
-  const ingredients = useSelector(getAllIngredients);
+  const ingredients = useSelector(selectIngredients);
 
-  const { buns, sauces, mains } = useMemo(
-    () => ({
-      buns: ingredients.filter((item) => item.type === 'bun'),
-      sauces: ingredients.filter((item) => item.type === 'sauce'),
-      mains: ingredients.filter((item) => item.type === 'main')
-    }),
-    [ingredients]
-  );
+  const buns = useMemo(() => {
+    const memoizedBuns = ingredients.filter(
+      (ingredient) => ingredient.type === 'bun'
+    );
+    return memoizedBuns;
+  }, [ingredients]);
+  const mains = useMemo(() => {
+    const memoizedMains = ingredients.filter(
+      (ingredient) => ingredient.type === 'main'
+    );
+    return memoizedMains;
+  }, [ingredients]);
+  const sauces = useMemo(() => {
+    const memoizedSauces = ingredients.filter(
+      (ingredient) => ingredient.type === 'sauce'
+    );
+    return memoizedSauces;
+  }, [ingredients]);
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
