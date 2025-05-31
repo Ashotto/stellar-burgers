@@ -1,40 +1,19 @@
-import { FC, useState } from 'react';
-import { useParams, useLocation, redirect } from 'react-router-dom';
-import { useAppSelector } from '../../services/store';
-
+import { FC } from 'react';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
+import { useSelector } from 'react-redux';
+import { getAllIngredients } from '../../services/ingredients/reducer';
+import { useParams } from 'react-router-dom';
 
-export const IngredientDetails: FC<{ title?: string }> = ({ title }) => {
-  const { id } = useParams<{ id: string }>();
-  const location = useLocation();
-  const [isImageLoaded, setImageLoaded] = useState(false);
-
-  const { ingredients, isLoading, error } = useAppSelector(
-    (state) => state.ingredients
+export const IngredientDetails: FC = () => {
+  const ingredients = useSelector(getAllIngredients);
+  const ingredientData = ingredients.find(
+    (item) => item._id === useParams().id
   );
 
-  if (!id) {
-    redirect('/');
-    return null;
+  if (!ingredientData) {
+    return <Preloader />;
   }
 
-  const ingredientData = ingredients.find((item) => item._id === id);
-  const isModalOpen = Boolean(location.state?.background);
-
-  if (isLoading) return <Preloader />;
-  if (error) return <p>Ингредиент не найден</p>;
-  if (!ingredientData) return null;
-
-  return (
-    <>
-      {!isImageLoaded && <Preloader />}
-      <IngredientDetailsUI
-        ingredientData={ingredientData}
-        onImageLoad={() => setImageLoaded(true)}
-        title={title || 'Детали ингредиента'}
-        isModalOpen={isModalOpen}
-      />
-    </>
-  );
+  return <IngredientDetailsUI ingredientData={ingredientData} />;
 };

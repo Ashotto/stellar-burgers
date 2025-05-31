@@ -1,46 +1,47 @@
-import { FC, memo, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC, memo } from 'react';
 import { BurgerConstructorElementUI } from '@ui';
 import { BurgerConstructorElementProps } from './type';
-import { 
-  removeIngredient, 
-  moveIngredientUp, 
-  moveIngredientDown 
-} from '../../slices/burgerConstructorSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  getConstructorIngredients,
+  removeIngredients
+} from '../../services/constructor/reducer';
 
-export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(({ 
-  ingredient, 
-  index, 
-  totalItems 
-}) => {
-  const dispatch = useDispatch();
+export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
+  ({ ingredient, index, totalItems }) => {
+    const dispatch = useDispatch();
+    const constructorBurgers = useSelector(getConstructorIngredients);
+    const handleMoveDown = () => {
+      const updateIngredients = [...constructorBurgers];
+      const ingredient = updateIngredients[index];
+      updateIngredients[index] = updateIngredients[index + 1];
+      updateIngredients[index + 1] = ingredient;
+      dispatch(removeIngredients(updateIngredients));
+    };
 
-  const handleMoveUp = useCallback(() => {
-    if (index > 0) {
-      dispatch(moveIngredientUp(index));
-    }
-  }, [dispatch, index]);
+    const handleMoveUp = () => {
+      const updatedIngredients = [...constructorBurgers];
+      const ingredient = updatedIngredients[index];
+      updatedIngredients[index] = updatedIngredients[index - 1];
+      updatedIngredients[index - 1] = ingredient;
+      dispatch(removeIngredients(updatedIngredients));
+    };
 
-  const handleMoveDown = useCallback(() => {
-    if (index < totalItems - 1) {
-      dispatch(moveIngredientDown(index));
-    }
-  }, [dispatch, index, totalItems]);
+    const handleClose = () => {
+      const updatedIngredients = [...constructorBurgers];
+      updatedIngredients.splice(index, 1);
+      dispatch(removeIngredients(updatedIngredients));
+    };
 
-  const handleClose = useCallback(() => {
-    dispatch(removeIngredient(ingredient));
-  }, [dispatch, ingredient]);
-
-  return (
-    <BurgerConstructorElementUI
-      ingredient={ingredient}
-      index={index}
-      totalItems={totalItems}
-      handleMoveUp={handleMoveUp}
-      handleMoveDown={handleMoveDown}
-      handleClose={handleClose}
-      isMoveUpDisabled={index === 0}
-      isMoveDownDisabled={index === totalItems - 1}
-    />
-  );
-});
+    return (
+      <BurgerConstructorElementUI
+        ingredient={ingredient}
+        index={index}
+        totalItems={totalItems}
+        handleMoveUp={handleMoveUp}
+        handleMoveDown={handleMoveDown}
+        handleClose={handleClose}
+      />
+    );
+  }
+);

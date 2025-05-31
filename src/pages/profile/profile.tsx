@@ -1,48 +1,55 @@
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../services/store';
-import { fetchUpdateUser } from '../../slices/userSlice';
 import { ProfileUI } from '@ui-pages';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { getUser } from '../../services/user/reducer';
+import { userUpdate } from '../../services/user/actions';
 
 export const Profile: FC = () => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
+  const userApi = useSelector(getUser);
+  const dispatch = useDispatch();
+  const user = {
+    name: userApi?.name || '',
+    email: userApi?.email || ''
+  };
 
   const [formValue, setFormValue] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
+    name: '',
+    email: '',
     password: ''
   });
 
-  const isFormChanged =
-    formValue.name !== user?.name ||
-    formValue.email !== user?.email ||
-    !!formValue.password;
-
   useEffect(() => {
-    setFormValue(prev => ({
-      ...prev,
+    setFormValue((prevState) => ({
+      ...prevState,
       name: user?.name || '',
       email: user?.email || ''
     }));
-  }, [user]);
+  }, [userApi]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValue(prev => ({ ...prev, [name]: value }));
-  };
+  const isFormChanged =
+    formValue.name !== user?.name || formValue.email !== user?.email;
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(fetchUpdateUser(formValue));
+    if (isFormChanged) {
+      dispatch(userUpdate(formValue));
+    }
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user?.name || '',
-      email: user?.email || '',
+      name: user.name,
+      email: user.email,
       password: ''
     });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValue((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
   };
 
   return (

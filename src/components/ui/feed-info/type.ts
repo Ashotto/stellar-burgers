@@ -1,19 +1,16 @@
-export type TColumnProps = {
-  title: string;
-  content: number;
+export type FeedInfoUIProps = {
+  feed: any;
+  readyOrders: number[];
+  pendingOrders: number[];
 };
 
 export type HalfColumnProps = {
   orders: number[];
   title: string;
-  textColor?: 'default' | 'success'; // конкретизировал возможные значения
+  textColor?: string;
 };
 
-export type FeedInfoUIProps = {
-  feed: {
-    total: number;
-    totalToday: number;
-  };
-  readyOrders: number[];
-  pendingOrders: number[];
+export type TColumnProps = {
+  title: string;
+  content: number;
 };

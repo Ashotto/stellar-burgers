@@ -1,23 +1,23 @@
 .container {
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
 
 .article {
-  color: #ffff;
-  text-decoration: none;
-  cursor: pointer;
-  width: 260px;
-  flex-direction: column;
-  display: flex;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffff;
 }
 
 .cost {
-  justify-content: center;
-  align-items: center;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .text {
@@ -25,6 +25,6 @@
 }
 
 .addButton {
-  justify-content: center;
   width: 260px;
+  justify-content: center;
 }

@@ -1,7 +1,6 @@
 .header {
   background-color: var(--background);
 }
-
 .menu {
   display: flex;
   align-items: center;
@@ -19,7 +18,6 @@
   display: flex;
   text-decoration: none;
   color: var(--text-inactive-color);
-  border-bottom: none;
 }
 
 .link_active {
@@ -36,12 +34,4 @@
   display: flex;
   align-items: center;
   margin: 0 auto;
-}
-
-.link:focus,
-.link:active,
-.link:focus-visible {
-  outline: none;
-  border-bottom: none;
-  text-decoration: none;
 }

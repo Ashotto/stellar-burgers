@@ -1,7 +1,3 @@
-import { useEffect } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../services/store';
-
 import {
   ConstructorPage,
   Feed,
@@ -13,153 +9,96 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { AppRoutes } from './appRoutes';
-import ProtectedRoute from '../protectedRoute/ProtectedRoute';
-
 import '../../index.css';
 import styles from './app.module.css';
 
-import { fetchIngredients } from '../../slices/ingredientSlice';
+import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import {
-  fetchCheckAuth,
-  fetchUser,
-  setAuthChecked
-} from '../../slices/userSlice';
-import { resetOrderModalData } from '../../slices/orderSlice';
-import { getCookie } from '../../utils/cookie';
-import { refreshToken } from '@api';
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams
+} from 'react-router-dom';
+import { useEffect } from 'react';
+import { getIngredients } from '../../services/ingredients/actions';
+import store, { useDispatch } from '../../services/store';
+import { checkUserAuth } from '../../services/user/actions';
+import { OnlyUnAuth, OnlyAuth } from '../protectedRoute';
 
 const App = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const background = location.state?.background;
-  const orderNumber = useAppSelector(
-    (state) => state.order.orderModalData?.number ?? ''
-  );
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchIngredients());
+    dispatch(getIngredients());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const refreshToken = getCookie('refreshToken');
-      if (refreshToken) {
-        await dispatch(fetchUser());
-        await dispatch(fetchCheckAuth());
-      } else {
-        dispatch(setAuthChecked(true));
-      }
-    };
-
-    checkAuth();
-  }, [dispatch, refreshToken]);
-
-  const handleModalClose = () => {
-    dispatch(resetOrderModalData());
+  const navigate = useNavigate();
+  const closeModal = () => {
     navigate(-1);
   };
+
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes location={background || location}>
-        <Route path={AppRoutes.HOME} element={<ConstructorPage />} />
-        <Route path={AppRoutes.FEED} element={<Feed />} />
-        
+      <Routes location={backgroundLocation || location}>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+
+        <Route path='/login' element={<OnlyUnAuth component={<Login />} />} />
         <Route
-          path={AppRoutes.INGREDIENT_DETAILS}
-          element={<IngredientDetails title='Детали ингредиента' />}
+          path='/register'
+          element={<OnlyUnAuth component={<Register />} />}
         />
         <Route
-          path={AppRoutes.ORDER_DETAILS}
-          element={<OrderInfo title={`#${orderNumber}`} />}
+          path='/forgot-password'
+          element={<OnlyUnAuth component={<ForgotPassword />} />}
+        />
+        <Route
+          path='/reset-password'
+          element={<OnlyUnAuth component={<ResetPassword />} />}
         />
 
+        <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
         <Route
-          path={AppRoutes.LOGIN}
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <Login />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={AppRoutes.REGISTER}
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <Register />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={AppRoutes.FORGOT_PASSWORD}
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <ForgotPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={AppRoutes.RESET_PASSWORD}
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <ResetPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={AppRoutes.PROFILE}
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={AppRoutes.PROFILE_ORDERS}
-          element={
-            <ProtectedRoute>
-              <ProfileOrders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={AppRoutes.PROFILE_ORDERS_NUMBER}
-          element={
-            <ProtectedRoute>
-              <OrderInfo title={`#${orderNumber}`} />
-            </ProtectedRoute>
-          }
+          path='/profile/orders'
+          element={<OnlyAuth component={<ProfileOrders />} />}
         />
 
-        <Route path={AppRoutes.NOT_FOUND} element={<NotFound404 />} />
+        <Route path='*' element={<NotFound404 />} />
+
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/profile/orders/:number' element={<OrderInfo />} />
       </Routes>
 
-      {background && (
+      {backgroundLocation && (
         <Routes>
           <Route
-            path={AppRoutes.INGREDIENT_DETAILS}
+            path='/feed/:number'
             element={
-              <Modal onClose={handleModalClose} title='Детали ингредиента'>
-                <IngredientDetails />
-              </Modal>
-            }
-          />
-          <Route
-            path={AppRoutes.ORDER_DETAILS}
-            element={
-              <Modal onClose={handleModalClose} title={`#${orderNumber}`}>
+              <Modal title={''} onClose={closeModal}>
                 <OrderInfo />
               </Modal>
             }
           />
+
           <Route
-            path={AppRoutes.PROFILE_ORDERS_NUMBER}
+            path='/ingredients/:id'
             element={
-              <Modal title={`#${orderNumber}`} onClose={handleModalClose}>
+              <Modal title={'Детали ингредиента'} onClose={closeModal}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal title={''} onClose={closeModal}>
                 <OrderInfo />
               </Modal>
             }

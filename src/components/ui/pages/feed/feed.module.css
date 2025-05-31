@@ -1,3 +1,20 @@
+.containerMain {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.titleBox {
+  width: 100%;
+  max-width: 1240px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .main {
   display: flex;
   justify-content: space-between;
@@ -6,29 +23,12 @@
   overflow: hidden;
 }
 
-.containerMain {
-  max-width: 1240px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.columnOrders {
+  width: 608px;
 }
 
 .columnInfo {
-  width: 580px;
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-.titleBox {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  max-width: 1240px;
-}
-
-.columnOrders {
-  width: 608px;
+  width: 580px;
 }

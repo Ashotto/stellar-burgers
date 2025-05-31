@@ -1,14 +1,17 @@
+.ingredients {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
 .order {
   display: block;
-  min-width: 576px;
-  padding: 24px;
-  margin-bottom: 16px;
-  margin-right: 8px;
-  box-sizing: border-box;
   text-decoration: none;
-  color: inherit;
+  color: unset;
   background-color: #1c1c21;
   border-radius: 40px;
+  min-width: 576px;
+  box-sizing: border-box;
 }
 
 .order_info {
@@ -18,7 +21,6 @@
 }
 
 .order_name {
-  margin-top: 24px;
   text-align: left;
 }
 
@@ -26,49 +28,39 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 24px;
 }
 
-.ingredients {
-  display: flex;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.order_total {
+  vertical-align: top;
 }
 
 .img_wrap {
-  position: relative;
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
+  border: #801ab3 solid 2px;
   background-color: #1c1c21;
-  border: 2px solid #801ab3;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.img_wrap:not(:first-child) {
-  margin-left: -20px;
+.img_wrap:nth-child(n + 2) {
+  position: relative;
+  right: 25px;
 }
 
 .img {
-  position: absolute;
+  position: relative;
+  right: 25px;
   width: 112px;
   height: 56px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .remains {
   position: absolute;
-  top: 50%;
   left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-.order_total {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  vertical-align: top;
 }
